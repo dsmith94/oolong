@@ -87,16 +87,23 @@ function lesson_box() {
 
 function lesson(book, chapter) {
     const key = `${book} ${chapter}`;
+    const div = document.createElement('div');
+    div.className = 'button-wrap';
     const b = document.createElement('button');
     b.className = (Object.keys(previous).indexOf(key) > -1) ? 'highlighted' : 'lesson';
     b.innerHTML = chapter;
     b.onclick = () => {
+        renderLesson(book, chapter);
         const time = new Date().getTime();
         previous[key] = time;
         localStorage.setItem('previous', JSON.stringify(previous));
-        renderLesson(book, chapter);
     }
-    return b;
+    div.append(b);
+    if (previous[key]) {
+        const last = `${new Date(previous[key]).toLocaleDateString()}`;
+        div.append(last);
+    }
+    return div;
 }
 
 
@@ -138,8 +145,9 @@ function renderLesson(book, chapter) {
         const c = card(note);
         box.append(c);
     }
-    console.log(previous[key]);
-    box.append(`Lesson done on: ${new Date(previous[key]).toLocaleDateString()}`);
+    if (previous[key]) {
+        box.append(`Last viewed: ${new Date(previous[key]).toLocaleDateString()}`);
+    }
     display([h, box]);
 }
 
