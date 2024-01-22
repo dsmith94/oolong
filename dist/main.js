@@ -1,6 +1,7 @@
 
 import { bookList } from "./books.js";
 import { stl } from './lessons.min.js';
+import { SmartyPants } from "./smartypants.js";
 
 
 const chapterIndex = {};
@@ -23,7 +24,7 @@ function header(content) {
     const div = document.createElement('div');
     div.className = 'header';
     if (content) {
-        div.append(content);
+        div.append(SmartyPants(content));
     }
     return div;
 }
@@ -47,7 +48,7 @@ function top_bar(content) {
     div.className = 'top-bar';
     if (content) {
         div.append(back_button());
-        div.append(content);
+        div.append(SmartyPants(content));
     }
     return div;
 }
@@ -64,7 +65,7 @@ function sub(content) {
     const div = document.createElement('div');
     div.className = 'theme';
     if (content) {
-        div.append(content);
+        div.innerHTML = SmartyPants(content);
     }
     return div;
 }
@@ -73,7 +74,7 @@ function sub(content) {
 function card(content) {
     const div = document.createElement('div');
     div.className = 'card';
-    div.append(content);
+    div.innerHTML = SmartyPants(content);
     return div;
 }
 
