@@ -51,6 +51,26 @@ html, body {
 }
 
 
+.highlighted {
+    background-color: #294073;
+    font-size: larger;
+    color: rgba(255, 255, 255, 0.7);
+    box-shadow: 6px 6px 14px 0 rgba(68, 60, 104, 0.55),
+    -8px -8px 18px 0 rgba(57, 48, 83, 0.2) ;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .lesson {
     background-color: #393053;
     font-size: larger;

@@ -4,6 +4,7 @@ import { stl } from './lessons.min.js';
 
 
 const chapterIndex = {};
+let previous = {};
 
 
 
@@ -31,7 +32,11 @@ function header(content) {
 function back_button() {
     const b = document.createElement('button');
     b.className = 'back-button';
-    b.innerHTML = '🞀';
+    b.innerHTML = `
+    <span class="material-symbols-outlined">
+    arrow_back_ios_new
+    </span>
+    `;
     b.onclick = () => renderIndex();
     return b;
 }
@@ -81,10 +86,16 @@ function lesson_box() {
 
 
 function lesson(book, chapter) {
+    const key = `${book} ${chapter}`;
     const b = document.createElement('button');
-    b.className = 'lesson';
+    b.className = (Object.keys(previous).indexOf(key) > -1) ? 'highlighted' : 'lesson';
     b.innerHTML = chapter;
-    b.onclick = () => renderLesson(book, chapter);
+    b.onclick = () => {
+        const time = new Date().getTime();
+        previous[key] = time;
+        localStorage.setItem('previous', JSON.stringify(previous));
+        renderLesson(book, chapter);
+    }
     return b;
 }
 
@@ -117,6 +128,7 @@ function renderIndex() {
 
 
 function renderLesson(book, chapter) {
+    const key = `${book} ${chapter}`;
     const lesson = chapterIndex[book][chapter];
     const h = top_bar(`${book} ${chapter}`);
     const box = content_box();
@@ -126,6 +138,8 @@ function renderLesson(book, chapter) {
         const c = card(note);
         box.append(c);
     }
+    console.log(previous[key]);
+    box.append(`Lesson done on: ${new Date(previous[key]).toLocaleDateString()}`);
     display([h, box]);
 }
 
@@ -146,6 +160,14 @@ function load() {
                 chapterIndex[book] = {};
             }
             chapterIndex[book][chapter] = {...plan[key], book, chapter};
+        }
+        const str = localStorage.getItem('previous');
+        if (str) {
+            try {
+                previous = JSON.parse(str) ?? {};
+            } catch {
+                previous = {};
+            }
         }
 
         renderIndex();
